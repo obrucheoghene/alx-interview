@@ -1,13 +1,11 @@
 #!/usr/bin/python3
 """
-Method to determine if all boxes can be opened
-Using prototype: def canUnlockAll(boxes)
+Module to Determine number of locked boxes in front of you
 """
 
 
 def canUnlockAll(boxes):
-    """
-    Check if boxes can be unlocked
+    """Determines if all the boxes can be opened
     """
     for key in range(1, len(boxes) - 1):
         ctr = False
