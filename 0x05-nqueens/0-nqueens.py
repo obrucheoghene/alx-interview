@@ -1,61 +1,49 @@
 #!/usr/bin/python3
-"""The N queens puzzle is the challenge"""
+"""N queens puzzle Module
+"""
+
+from sys import argv
 
 
-import sys
+def is_NQueen(cell: list) -> bool:
+    """ False if not N Queen, True if N Queen """
+    row_number = len(cell) - 1
+    difference = 0
+    for index in range(0, row_number):
+        difference = cell[index] - cell[row_number]
+        if difference < 0:
+            difference *= -1
+        if difference == 0 or difference == row_number - index:
+            return False
+    return True
 
 
-def get_solutions(row, column):
-    solution = [[]]
-    for queen in range(row):
-        solution = place_queen(queen, column, solution)
-    return solution
-
-
-def place_queen(queen, column, prev_solution):
-    safe_position = []
-    for array in prev_solution:
-        for x in range(column):
-            if is_safe(queen, x, array):
-                safe_position.append(array + [x])
-    return safe_position
-
-
-def is_safe(q, x, array):
-    if x in array:
-        return (False)
+def solve_NQueens(dimension: int, row: int, cell: list, output: list):
+    """ Return result of N Queens recursively """
+    if row == dimension:
+        print(output)
     else:
-        return all(abs(array[column] - x) != q - column
-                   for column in range(q))
+        for column in range(0, dimension):
+            cell.append(column)
+            output.append([row, column])
+            if (is_NQueen(cell)):
+                solve_NQueens(dimension, row + 1, cell, output)
+            cell.pop()
+            output.pop()
 
 
-def init():
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-    if sys.argv[1].isdigit():
-        n = int(sys.argv[1])
-    else:
-        print("N must be a number")
-        sys.exit(1)
-    if n < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-    return (n)
-
-
-def n_queens():
-
-    n = init()
-    # get all solutions
-    solutions = get_solutions(n, n)
-    # print solutions
-    for array in solutions:
-        clean = []
-        for q, x in enumerate(array):
-            clean.append([q, x])
-        print(clean)
-
-
-if __name__ == '__main__':
-    n_queens()
+if len(argv) != 2:
+    print('Usage: nqueens N')
+    exit(1)
+try:
+    N = int(argv[1])
+except BaseException:
+    print('N must be a number')
+    exit(1)
+if N < 4:
+    print('N must be at least 4')
+    exit(1)
+else:
+    output = []
+    cell = 0
+    solve_NQueens(int(N), cell, [], output)
